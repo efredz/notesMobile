@@ -12,20 +12,29 @@ class NoteRepository {
 
   getAllNotes() async {
     final db = await DatabaseProvider.databaseProvider.database;
-    var notes = await db.query("notes");
-    final List<Map<String, dynamic>> maps = await db.query("notes");
+    if(db == null) {
+      print("Database is null");
+    } else {
+      var notes = await db.query("notes");
+      final List<Map<String, dynamic>> maps = await db.query("notes");
 
-    return List.generate(maps.length, (i) {
-      return Note(
-        id: maps[i]['id'],
-        title: maps[i]['title'],
-        body: maps[i]['body']
-      );
-    });
+      return List.generate(maps.length, (i) {
+        return Note(
+            id: maps[i]['id'],
+            title: maps[i]['title'],
+            body: maps[i]['body']
+        );
+      });
+    }
   }
 
   createNote(Note note) async {
     final db = await DatabaseProvider.databaseProvider.database;
-    await db.insert('notes', note.toMap(), conflictAlgorithm: ConflictAlgorithm.replace);
+    if(db == null) {
+      print("Database is null");
+    } else {
+      await db.insert('notes', note.toMap(), conflictAlgorithm: ConflictAlgorithm.replace);
+
+    }
   }
 }

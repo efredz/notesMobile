@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:notas/data/repository/NoteRepository.dart';
+
+import 'data/models/note.dart';
 
 void main() => runApp(MyApp());
 
@@ -45,9 +48,15 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   int _counter = 0;
+  var notes = dynamic;
 
-  void _incrementCounter() {
-    setState(() {
+  void _incrementCounter() async {
+    var repository = NoteRepository();
+    Note nota = new Note(id: 1, title: "hola", body: "algo");
+    repository.createNote(nota);
+
+    setState(() async {
+      notes = repository.getAllNotes();
       // This call to setState tells the Flutter framework that something has
       // changed in this State, which causes it to rerun the build method below
       // so that the display can reflect the updated values. If we changed
@@ -91,6 +100,9 @@ class _MyHomePageState extends State<MyHomePage> {
           // horizontal).
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
+            Text(
+              'Primera nota: $notes[0]'
+            ),
             Text(
               'Hay apretado esta huea todas estas veces',
             ),

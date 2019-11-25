@@ -9,8 +9,11 @@ class DatabaseProvider {
   static Database _database;
 
   Future<Database> get database async {
-    if (_database != null)
+    if (_database != null) {
+      print("Database is initialized");
       return _database;
+
+    }
 
     // if _database is null we instantiate it
     _database = await initDB();
@@ -18,6 +21,7 @@ class DatabaseProvider {
   }
 
   initDB() async {
+    print("Inside initDb");
     final Future<Database> database = openDatabase(
         join(await getDatabasesPath(), 'notes.db'),
         version: 1,
@@ -28,4 +32,6 @@ class DatabaseProvider {
               "title TEXT,"
               "body TEXT");
         });
-  }}
+    print(database);
+  }
+}
